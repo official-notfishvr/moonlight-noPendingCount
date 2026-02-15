@@ -1,135 +1,150 @@
 .messagelogger-deleted [class*="buttons"] {
-    display: none;
+  display: none;
 }
 
-.messagelogger-deleted :is(
+.messagelogger-deleted
+  :is(
     .messagelogger-deleted-attachment,
     .emoji,
     [data-type="sticker"],
     [class*="embedIframe"],
     [class*="embedSpotify"],
     [class*="imageContainer"]
-) {
-    filter: grayscale(1) !important;
-    transition: 150ms filter ease-in-out;
+  ) {
+  filter: grayscale(1) !important;
+  transition: 150ms filter ease-in-out;
 }
 
-.messagelogger-deleted :is(
+.messagelogger-deleted
+  :is(
     .messagelogger-deleted-attachment,
     .emoji,
     [data-type="sticker"],
     [class*="embedIframe"],
     [class*="embedSpotify"],
     [class*="imageContainer"]
-):hover {
-    filter: grayscale(0) !important;
+  ):hover {
+  filter: grayscale(0) !important;
 }
 
 .messagelogger-deleted [class*="spoilerWarning"] {
-    color: var(--status-danger);
+  color: var(--status-danger);
 }
 
-body[data-ml-delete-style="text"] .messagelogger-deleted {
-    --text-default: var(--status-danger, #f04747);
-    --interactive-icon-default: var(--status-danger, #f04747);
-    --text-muted: var(--status-danger, #f04747);
-    --embed-title: var(--red-460, #be3535);
-    --text-link: var(--red-460, #be3535);
-    --text-strong: var(--red-460, #be3535);
-    --text-normal: var(--status-danger, #f04747) !important;
-    --header-primary: var(--status-danger, #f04747) !important;
-    --header-secondary: var(--status-danger, #f04747) !important;
+.messagelogger-deleted {
+  --text-default: var(--status-danger, #f04747);
+  --interactive-icon-default: var(--status-danger, #f04747);
+  --text-muted: var(--status-danger, #f04747);
+  --embed-title: var(--red-460, #be3535);
+  --text-link: var(--red-460, #be3535);
+  --text-strong: var(--red-460, #be3535);
+  --text-normal: var(--status-danger, #f04747) !important;
+  --header-primary: var(--status-danger, #f04747) !important;
+  --header-secondary: var(--status-danger, #f04747) !important;
 }
 
-body[data-ml-delete-style="text"] .messagelogger-deleted h3 span {
-    color: var(--status-danger, #f04747) !important;
+.messagelogger-deleted h3 span {
+  color: var(--status-danger, #f04747) !important;
 }
 
 body[data-ml-delete-style="overlay"] .messagelogger-deleted {
-    background-color: hsl(var(--red-430-hsl, 0 85% 61%) / 15%) !important;
+  --text-default: unset;
+  --interactive-icon-default: unset;
+  --text-muted: unset;
+  --embed-title: unset;
+  --text-link: unset;
+  --text-strong: unset;
+  --text-normal: unset !important;
+  --header-primary: unset !important;
+  --header-secondary: unset !important;
+  background-color: hsl(var(--red-430-hsl, 0 85% 61%) / 15%) !important;
+}
+
+body[data-ml-delete-style="overlay"] .messagelogger-deleted h3 span {
+  color: unset !important;
 }
 
 .theme-dark .messagelogger-edited {
-    filter: brightness(80%);
+  filter: brightness(80%);
 }
 
 .theme-light .messagelogger-edited {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .messagelogger-edit-marker {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .messagelogger-edit-marker:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .messagelogger-diff-added {
-    color: #85E89D;
+  color: #85e89d;
 }
 
 .messagelogger-diff-removed {
-    color: #F47068;
+  color: #f47068;
 }
 
 .messagelogger-diff-added [class*="emojiContainer"],
 .messagelogger-diff-added img.emoji {
-    position: relative;
+  position: relative;
 }
 
 .messagelogger-diff-added [class*="emojiContainer"]::after,
 .messagelogger-diff-added img.emoji::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: rgb(133 232 157 / 60%);
-    border-radius: 3px;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(133 232 157 / 60%);
+  border-radius: 3px;
+  pointer-events: none;
 }
 
 .messagelogger-diff-removed [class*="emojiContainer"],
 .messagelogger-diff-removed img.emoji {
-    position: relative;
+  position: relative;
 }
 
 .messagelogger-diff-removed [class*="emojiContainer"]::after,
 .messagelogger-diff-removed img.emoji::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: rgb(244 112 104 / 60%);
-    border-radius: 3px;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(244 112 104 / 60%);
+  border-radius: 3px;
+  pointer-events: none;
 }
 
 .messagelogger-diff-view {
-    display: inline-flex;
-    flex-direction: column;
-    gap: 4px;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .messagelogger-diff-original,
 .messagelogger-diff-updated {
-    display: block;
-    white-space: pre-wrap;
+  display: block;
+  white-space: pre-wrap;
 }
 
 .messagelogger-diff-disabled .messagelogger-diff-added,
 .messagelogger-diff-disabled .messagelogger-diff-removed {
-    color: inherit;
+  color: inherit;
 }
 
 .messagelogger-diff-disabled .messagelogger-diff-added [class*="emojiContainer"]::after,
 .messagelogger-diff-disabled .messagelogger-diff-added img.emoji::after,
 .messagelogger-diff-disabled .messagelogger-diff-removed [class*="emojiContainer"]::after,
 .messagelogger-diff-disabled .messagelogger-diff-removed img.emoji::after {
-    display: none !important;
+  display: none !important;
 }
 
 .messagelogger-history-timestamp {
-    font-size: 0.625rem;
-    opacity: 0.7;
-    margin-left: 4px;
-    color: var(--text-muted, #72767d);
+  font-size: 0.625rem;
+  opacity: 0.7;
+  margin-left: 4px;
+  color: var(--text-muted, #72767d);
 }

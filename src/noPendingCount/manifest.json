@@ -8,7 +8,7 @@
     "tagline": "Removes the ping count of incoming friend requests, message requests, and nitro offers.",
     "description": "Removes the badge count indicators for incoming friend requests, message requests, and Nitro offers. Each can be toggled individually in settings. [ported form amia]",
     "authors": ["notfishvr", "amia"],
-    "source": "https://github.com/official-notfishvr/moonlight-NoPendingCount"
+    "source": "https://github.com/official-notfishvr/moonlight-extensions"
   },
   "settings": {
     "hideFriendRequestsCount": {

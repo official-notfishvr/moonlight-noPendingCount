@@ -35,9 +35,18 @@ export function shouldIgnore(message: any, isEdit: boolean = false): boolean {
     const logEdits = getSetting<boolean>("logEdits", true);
     const logDeletes = getSetting<boolean>("logDeletes", true);
 
-    const ignoreUsers = ignoreUsersStr.split(",").map(s => s.trim()).filter(Boolean);
-    const ignoreChannels = ignoreChannelsStr.split(",").map(s => s.trim()).filter(Boolean);
-    const ignoreGuilds = ignoreGuildsStr.split(",").map(s => s.trim()).filter(Boolean);
+    const ignoreUsers = ignoreUsersStr
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const ignoreChannels = ignoreChannelsStr
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const ignoreGuilds = ignoreGuildsStr
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     let currentUserId = "";
     try {
@@ -83,10 +92,7 @@ export function handleDelete(
       if (!msg) return;
 
       const EPHEMERAL = 64;
-      const skip =
-        data.mlDeleted ||
-        (msg.flags & EPHEMERAL) === EPHEMERAL ||
-        shouldIgnore(msg);
+      const skip = data.mlDeleted || (msg.flags & EPHEMERAL) === EPHEMERAL || shouldIgnore(msg);
 
       if (skip) {
         cache = cache.remove(id);
@@ -94,15 +100,13 @@ export function handleDelete(
         cache = cache.update(id, (m: any) =>
           m.set("deleted", true).set(
             "attachments",
-            m.attachments.map((a: any) => { a.deleted = true; return a; }),
+            m.attachments.map((a: any) => {
+              a.deleted = true;
+              return a;
+            })
           )
         );
-        console.log(
-          "[MessageLogger] Deleted message preserved:",
-          id,
-          "channel:",
-          data.channelId || "(unknown)"
-        );
+        console.log("[MessageLogger] Deleted message preserved:", id, "channel:", data.channelId || "(unknown)");
       }
     };
 
@@ -124,14 +128,11 @@ export function makeEdit(
   console.log("[MessageLogger] Edit recorded, old content:", oldMessage.content);
   return {
     timestamp: new Date(newMessage.edited_timestamp),
-    content: oldMessage.content,
+    content: oldMessage.content
   };
 }
 
-function createDiffElement(
-  part: DiffPart,
-  key: React.Key
-): React.ReactElement {
+function createDiffElement(part: DiffPart, key: React.Key): React.ReactElement {
   let className: string | undefined = undefined;
   if (part.type === "added") {
     className = "messagelogger-diff-added";
@@ -171,9 +172,7 @@ export function renderEdits(props: { message: any }): React.ReactNode {
     const history: Array<{ timestamp: Date; content: string }> = msg.editHistory;
 
     const elements = history.map((edit: { timestamp: Date; content: string }, idx: number) => {
-      const nextContent = idx === history.length - 1
-        ? msg.content
-        : history[idx + 1]?.content;
+      const nextContent = idx === history.length - 1 ? msg.content : history[idx + 1]?.content;
 
       const parsed = parseEditContent(edit.content, msg, nextContent);
       const ts = formatTimestamp(edit.timestamp);
@@ -218,7 +217,7 @@ export function EditMarker(props: {
       ...rest,
       className: classes.join(" "),
       onClick: () => openHistoryModal(message),
-      role: "button",
+      role: "button"
     },
     children
   );
@@ -254,17 +253,19 @@ export function openHistoryModal(message: any): void {
 }
 
 export const DELETED_MESSAGE_COUNT = () => ({
-  ast: [[
-    6,
-    "count",
-    {
-      "=0": ["No deleted messages"],
-      one: [[1, "count"], " deleted message"],
-      other: [[1, "count"], " deleted messages"]
-    },
-    0,
-    "cardinal"
-  ]]
+  ast: [
+    [
+      6,
+      "count",
+      {
+        "=0": ["No deleted messages"],
+        one: [[1, "count"], " deleted message"],
+        other: [[1, "count"], " deleted messages"]
+      },
+      0,
+      "cardinal"
+    ]
+  ]
 });
 
 export function getMessageContextMenuItems(props: { message: any }): React.ReactElement[] | null {
@@ -280,13 +281,13 @@ export function getMessageContextMenuItems(props: { message: any }): React.React
         React.createElement(contextMenu.MenuItem, {
           id: "ml-toggle-delete-style",
           key: "ml-toggle-delete-style",
-          label: "Toggle Delete Highlight",
+          label: "Hide Delete Highlight",
           action: () => {
             const el = document.getElementById("chat-messages-" + msg.channel_id + "-" + msg.id);
             if (el) {
-              el.classList.toggle("messagelogger-deleted");
+              el.classList.remove("messagelogger-deleted");
             }
-          },
+          }
         })
       );
 
@@ -301,9 +302,9 @@ export function getMessageContextMenuItems(props: { message: any }): React.React
               type: "MESSAGE_DELETE",
               channelId: msg.channel_id,
               id: msg.id,
-              mlDeleted: true,
+              mlDeleted: true
             });
-          },
+          }
         })
       );
     }
@@ -316,7 +317,7 @@ export function getMessageContextMenuItems(props: { message: any }): React.React
           label: "View Edit History (" + msg.editHistory.length + ")",
           action: () => {
             openHistoryModal(msg);
-          },
+          }
         })
       );
 
@@ -328,7 +329,7 @@ export function getMessageContextMenuItems(props: { message: any }): React.React
           color: "danger",
           action: () => {
             msg.editHistory = [];
-          },
+          }
         })
       );
     }
@@ -340,70 +341,72 @@ export function getMessageContextMenuItems(props: { message: any }): React.React
   }
 }
 
-contextMenu.addItem("message", (props: any) => {
-  const msg = props?.message;
-  if (!msg) return null;
-  if (!msg.deleted && (!msg.editHistory || msg.editHistory.length === 0)) return null;
+contextMenu.addItem(
+  "message",
+  (props: any) => {
+    const msg = props?.message;
+    if (!msg) return null;
+    if (!msg.deleted && (!msg.editHistory || msg.editHistory.length === 0)) return null;
 
-  const items: React.ReactElement[] = [];
+    const items: React.ReactElement[] = [];
 
-  if (msg.deleted) {
-    items.push(
-      React.createElement(contextMenu.MenuItem, {
-        id: "ml-ctx-toggle-delete",
-        key: "ml-ctx-toggle-delete",
-        label: "Toggle Delete Highlight",
-        action: () => {
-          const el = document.getElementById("chat-messages-" + msg.channel_id + "-" + msg.id);
-          if (el) el.classList.toggle("messagelogger-deleted");
-        },
-      })
-    );
-    items.push(
-      React.createElement(contextMenu.MenuItem, {
-        id: "ml-ctx-remove-message",
-        key: "ml-ctx-remove-message",
-        label: "Remove Deleted Message",
-        color: "danger",
-        action: () => {
-          Dispatcher.dispatch({
-            type: "MESSAGE_DELETE",
-            channelId: msg.channel_id,
-            id: msg.id,
-            mlDeleted: true,
-          });
-        },
-      })
-    );
-  }
+    if (msg.deleted) {
+      items.push(
+        React.createElement(contextMenu.MenuItem, {
+          id: "ml-ctx-toggle-delete",
+          key: "ml-ctx-toggle-delete",
+          label: "Hide Delete Highlight",
+          action: () => {
+            const el = document.getElementById("chat-messages-" + msg.channel_id + "-" + msg.id);
+            if (el) el.classList.remove("messagelogger-deleted");
+          }
+        })
+      );
+      items.push(
+        React.createElement(contextMenu.MenuItem, {
+          id: "ml-ctx-remove-message",
+          key: "ml-ctx-remove-message",
+          label: "Remove Deleted Message",
+          color: "danger",
+          action: () => {
+            Dispatcher.dispatch({
+              type: "MESSAGE_DELETE",
+              channelId: msg.channel_id,
+              id: msg.id,
+              mlDeleted: true
+            });
+          }
+        })
+      );
+    }
 
-  if (msg.editHistory && msg.editHistory.length > 0) {
-    items.push(
-      React.createElement(contextMenu.MenuItem, {
-        id: "ml-ctx-view-history",
-        key: "ml-ctx-view-history",
-        label: "View Edit History (" + msg.editHistory.length + ")",
-        action: () => openHistoryModal(msg),
-      })
-    );
-    items.push(
-      React.createElement(contextMenu.MenuItem, {
-        id: "ml-ctx-clear-edits",
-        key: "ml-ctx-clear-edits",
-        label: "Clear Edit History",
-        color: "danger",
-        action: () => { msg.editHistory = []; },
-      })
-    );
-  }
+    if (msg.editHistory && msg.editHistory.length > 0) {
+      items.push(
+        React.createElement(contextMenu.MenuItem, {
+          id: "ml-ctx-view-history",
+          key: "ml-ctx-view-history",
+          label: "View Edit History (" + msg.editHistory.length + ")",
+          action: () => openHistoryModal(msg)
+        })
+      );
+      items.push(
+        React.createElement(contextMenu.MenuItem, {
+          id: "ml-ctx-clear-edits",
+          key: "ml-ctx-clear-edits",
+          label: "Clear Edit History",
+          color: "danger",
+          action: () => {
+            msg.editHistory = [];
+          }
+        })
+      );
+    }
 
-  if (items.length === 0) return null;
+    if (items.length === 0) return null;
 
-  return React.createElement(
-    contextMenu.MenuGroup,
-    { key: "ml-ctx-group" },
-    ...items
-  );
-}, "copy-id");
+    return React.createElement(contextMenu.MenuGroup, { key: "ml-ctx-group" }, ...items);
+  },
+  "copy-id"
+);
 
 console.log("[MessageLogger] Extension loaded. Delete style:", getSetting<string>("deleteStyle", "text"));

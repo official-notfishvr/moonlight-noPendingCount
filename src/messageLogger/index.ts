@@ -104,7 +104,8 @@ export const patches: ExtensionWebExports["patches"] = [
     find: "Message must not be a thread starter message",
     replace: {
       match: /\)\("li",\{(.+?),className:/,
-      replacement: ')("li",{$1,className:(arguments[0].message.deleted?"messagelogger-deleted "+"")+'
+      replacement: (m: string, inner: string) =>
+        ')("li",{' + inner + ',className:(arguments[0].message.deleted?"messagelogger-deleted ":"")+'
     }
   },
   {
