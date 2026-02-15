@@ -8,6 +8,7 @@
     "tagline": "Adds a download button to voice messages.",
     "description": "Adds a download button to voice messages. [ported from Vencord]",
     "authors": ["notfishvr"],
+    "source": "https://github.com/official-notfishvr/moonlight-extensions",
     "tags": ["audio", "utils"]
   },
   "dependencies": ["spacepack"]

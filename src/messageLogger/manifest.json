@@ -8,7 +8,7 @@
     "tagline": "Logs deleted and edited messages",
     "description": "Keeps deleted messages visible and stores edit history so you never miss what was said.",
     "authors": ["notfishvr"],
-    "source": "https://github.com/notfishvr/moonlight-extensions",
+    "source": "https://github.com/official-notfishvr/moonlight-extensions",
     "tags": ["chat", "utility"]
   },
   "dependencies": ["contextMenu", "spacepack"],
